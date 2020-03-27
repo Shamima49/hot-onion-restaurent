@@ -1,0 +1,20 @@
+ul {
+    list-style-type: none;
+} 
+button:focus {
+    outline:none;
+} 
+button:hover {
+    transition:300ms ease-in;
+    border-bottom: 2px solid rgb(209, 21, 65);
+    outline:none;
+}
+.cart {
+    border:none;
+}
+
+/* .food-menu li {
+    text-decoration: none;
+    list-style-type: none;
+    
+} */
