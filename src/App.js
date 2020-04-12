@@ -1,40 +1,102 @@
-import React from 'react';
+
+import React,{useState} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { AuthProvider, PrivateRoute } from './Components/SignUp/useAuth';
 import './App.css';
-import Header from './component/Header/Header';
-import Food from './component/Food/Food';
-import Banner from './component/Banner/Banner';
-import NotFound from './component/NotFound/NotFound';
-import FoodDetails from './component/FoodDetails/FoodDetails';
-import FoodItems from './component/FoodItems/FoodItems';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import Header from './Components/Header/Header';
+import Banner from './Components/Banner/Banner';
+import Foods from './Components/Foods/Foods';
+import Footer from './Components/Footer/Footer';
+import Features from './Components/Features/Features';
+import FoodDetails from './Components/FoodDetails/FoodDetails';
+import SignUp from './Components/SignUp/SignUp';
+import Shipment from './Components/Shipment/Shipment';
+import OrderComplete from './Components/OrderComplete/OrderComplete';
+import NotFound from './Components/NotFound/NotFound';
+import SearchResult from './Components/SearchResult/SearchResult';
+
 function App() {
+    
+    const [cart , setCart] = useState([]);
+    const [deliveryDetails , setDeliveryDetails] = useState({
+      todoor:null,road:null, flat:null, businessname:null, address: null
+    });
+    const deliveryDetailsHandler = (data) => {
+        setDeliveryDetails(data)
+    }
+    const clearCart = () => {
+      setCart([])
+    }
+    const cartHandler = (data) => {
+      const alreadyAdded = cart.find(crt => crt.id == data.id );
+      const newCart = [...cart,data]
+      setCart(newCart);
+      if(alreadyAdded){
+        const reamingCarts = cart.filter(crt => cart.id != data);
+        setCart(reamingCarts);
+      }else{
+        const newCart = [...cart,data]
+        setCart(newCart);
+      }
+     
+    }
+
+    const checkOutItemHandler = (productId, productQuantity) => {
+      const newCart = cart.map(item => {
+        if(item.id == productId){
+            item.quantity = productQuantity;
+        }
+        return item;
+      })
+
+      const filteredCart = newCart.filter(item => item.quantity > 0)
+      setCart(filteredCart)
+    }
+
   return (
-    <div>
-      
+    <AuthProvider>
       <Router>
-         <Switch>
+        <div className="main">
+          <Switch>
             <Route exact path="/">
-                <Header></Header>
+                <Header cart={cart}></Header>
                 <Banner></Banner>
-                <Food></Food>
+                <Foods cart={cart}></Foods>
+                <Features></Features>
+                <Footer></Footer>
             </Route>
             <Route path="/food/:id">
-                <Header></Header>
-                <FoodDetails></FoodDetails>
+                <Header cart={cart}></Header>
+                <FoodDetails cart={cart} cartHandler={cartHandler}></FoodDetails>
+                <Footer></Footer>
             </Route>
-          
+            <Route path="/search=:searchQuery">
+                <Header cart={cart}></Header>
+                <Banner></Banner>
+                <SearchResult></SearchResult>
+                <Features></Features>
+                <Footer></Footer>
+            </Route>
+            <PrivateRoute path="/checkout">
+                <Header cart={cart}></Header>
+                <Shipment deliveryDetails={deliveryDetails} deliveryDetailsHandler={deliveryDetailsHandler} cart={cart} clearCart={clearCart} checkOutItemHandler={checkOutItemHandler}></Shipment>
+                <Footer></Footer>
+            </PrivateRoute>
+            <PrivateRoute path="/order-complete">
+              <Header cart={cart}></Header>
+              <OrderComplete deliveryDetails={deliveryDetails}></OrderComplete>
+              <Footer></Footer>
+            </PrivateRoute>
+            <Route path="/login">
+                <SignUp></SignUp>
+            </Route>
             <Route path="*">
-              <NotFound></NotFound>
+                <NotFound></NotFound>
             </Route>
-         </Switch>
-       </Router>
-    
-    </div>
+          </Switch>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
