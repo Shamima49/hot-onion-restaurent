@@ -6,7 +6,7 @@ import Header from './Components/Header/Header';
 import Banner from './Components/Banner/Banner';
 import Foods from './Components/Foods/Foods';
 import Footer from './Components/Footer/Footer';
-import Features from './Components/Features/Features';
+//import Features from './Components/Features/Features';
 import FoodDetails from './Components/FoodDetails/FoodDetails';
 import SignUp from './Components/SignUp/SignUp';
 import Shipment from './Components/Shipment/Shipment';
@@ -40,7 +40,7 @@ function App() {
       })
 
       const orderDetailsData = { userEmail , orderedItems,  deliveryDetails }
-      fetch('http://localhost:5000/submitorder' , {
+      fetch('https://thawing-caverns-05999.herokuapp.com/submitOrder' , {
           method : "POST",
           headers: {
               "Content-type" : "application/json"
@@ -89,7 +89,7 @@ function App() {
                 <Header cart={cart}/>
                 <Banner/>
                 <Foods cart={cart}></Foods>
-                <Features/>
+                {/* <Features/> */}
                 <Footer/>
             </Route>
             <Route path="/food/:id">
@@ -101,7 +101,7 @@ function App() {
                 <Header cart={cart}/>
                 <Banner/>
                 <SearchResult/>
-                <Features/>
+                {/* <Features/> */}
                 <Footer/>
             </Route>
             <PrivateRoute path="/checkout">

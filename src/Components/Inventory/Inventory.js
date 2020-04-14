@@ -1,6 +1,6 @@
 import React from 'react';
 import foods from '../../Data/foods';
-import features from '../../Data/features';
+
 const AddProducts = () => {
     const dataPoster = (url, dataToPost) => {
         fetch(url , {
@@ -15,12 +15,10 @@ const AddProducts = () => {
         .catch(err  => console.log(err))
     }
 
-
     return (
         <div className="container py-5">
             <h1>Inventory Management</h1>
-            <button onClick={() => dataPoster('http://localhost:5000/addfood',foods)} className="btn btn-danger mr-2">Add products</button>
-            <button onClick={() => dataPoster('http://localhost:5000/addfeatures', features)} className="btn btn-danger">Add Features</button>
+            <button onClick={() => dataPoster('https://thawing-caverns-05999.herokuapp.com/addFood',foods)} className="btn btn-danger mr-2">Add products</button>
         </div>
     );
 };

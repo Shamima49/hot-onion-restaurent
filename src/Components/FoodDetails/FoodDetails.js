@@ -14,7 +14,7 @@ const FoodDetails = (props) => {
     const [isSuccess, setIsSuccess] = useState(false);
     
     useEffect(() => {
-        fetch("http://localhost:5000/food/"+ id)
+        fetch("https://thawing-caverns-05999.herokuapp.com/food/"+ id)
         .then(res=>res.json())
         .then(data => {
             setCurrentFood(data);
