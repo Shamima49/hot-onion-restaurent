@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import './Features.css';
-import AllFeatures from '../../Data/features.json'
 import SingleFeature from '../SingleFeature/SingleFeature';
+
 
 function Features(props) {
     const [features , setFeatures] = useState([]);
+    
+    
     useEffect(() => {
-        setFeatures(AllFeatures);
-    }, []);
+            fetch('http://localhost:5000/features')
+            .then(res => res.json())
+            .then(data => {
+                setFeatures(data);
+            
+            })
+            .catch(err => console.log(err))
+    } ,[features.length])
+        
+    
 
     return (
         <section className="features my-5">
@@ -22,9 +32,10 @@ function Features(props) {
                             </div>
                         </div>
                     </div>
+                    
 
                     {
-                        features.map( feature => <SingleFeature key={feature.id} feature={feature}></SingleFeature>)
+                        features.map( feature => <SingleFeature key={feature.id} feature={feature}/>)
                     }
                     
                 </div>
